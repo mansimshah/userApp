@@ -1,55 +1,39 @@
-// var express = require('express');
-// var router = express.Router();
-
-var User = require('../models/user');
+var userModel = require('../models/user');
+var USER_COLLECTION = userModel.users;
+var bcrypt = require('bcryptjs');
 
 exports.adduser	= _adduser;
 exports.testuser = _testuser;
 
 function _adduser(req, res, next){
 
-// var _adduser = router.post('/register', function(req, res){
-
 	var username = req.body.username;
 	var email = req.body.email;
 	var password = req.body.password;
 	var password2 = req.body.password2;
+	var json={};
 
-	// validation
-	// req.checkBody('username', 'Username is required').notEmpty();
-	// req.checkBody('email', 'Email is required').notEmpty();
-	// req.checkBody('email', 'Email is not valid').isEmail();
-	// req.checkBody('password', 'Password is not valid').notEmpty();
-	// req.checkBody('password2', 'Password do not match').equals(req.body.password);
-
-	// var errors = req.validationErrors();
-
-	// if(error){
-	// 	json.status='0';
-	// 	json.result={'error':'Error In Adding New User'};
-	// 	res.send(json);
-	// }else {
-	// 	var newUser = new User({
-	// 		username: username,
-	// 		email: email,
-	// 		password: password
-	// 	});
-
-	// 	User.createUser(newUser, function(err, user){
-	// 		if(err) throw err;
-	// 		console.log(user);
-	// 	});
-	// }
-
-	var newUser = new User({
+	var newUser = new USER_COLLECTION({
 			username: username,
 			email: email,
 			password: password
-		});
+	});
 
-	User.createUser(newUser, function(err, user){
-		if(err) throw err;
-		console.log(user);
+	bcrypt.genSalt(10, function(err, salt){
+		bcrypt.hash(newUser.password, salt, function(err, hash){
+			newUser.password = hash;
+			newUser.save(function(error, result){
+				if(error){
+					json.status = '0';
+					json.result = {'Error': error};
+					res.send(json);
+				}else{
+					json.status = '1';
+					json.result = {'Message': "User "+ newUser.email + " is created successfully."};
+					res.send(json);
+				}
+			});
+		});
 	});
 
 }

@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+var users = new Schema({
   username: {
     type: String,
     required: true,
@@ -22,14 +22,4 @@ var userSchema = new Schema({
     default: Date.now
   }
 });
-
-module.exports = mongoose.model('User', userSchema);
-
-module.exports.createUser = function(newUser, callback){
-	bcrypt.genSalt(10, function(err, salt){
-		bcrypt.hash(newUser.password, salt, function(err, hash){
-			newUser.password = hash;
-			newUser.save(callback);
-		});
-	});
-}
+exports.users = mongoose.model('users' , users);
