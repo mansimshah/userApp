@@ -54,12 +54,10 @@ app.use(bodyParser());
 var user = require('./routes/user');
 
 /*---------------------------User Routes------------------------------*/
-app.post('/register', user.adduser);
-app.get('/testuser', user.testuser);
-
+app.post('/register', user.register);
+app.post('/login', user.login);
 
 http.createServer(app).listen(app.get('port'), function(){
 // http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
 });
-
