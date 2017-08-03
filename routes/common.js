@@ -30,20 +30,3 @@ function _validatePassword(req, res, plainPass, hashedPass, callback) {
     var validHash = salt + exports.md5(plainPass + salt);
     callback(null, hashedPass === validHash);
 };
-
-// Common.validatePassword(req, res, password, user.password, function(error, isvalid){
-//     if(isvalid){
-//            if (req.param('remember-me') == 'true'){
-//                res.cookie('user', user.user, { maxAge: config.site.maxCookieAge });
-//                res.cookie('pass', user.pass, { maxAge: config.site.maxCookieAge });
-//            }
-//            json.status='0';
-//      json.result={'success' : 'Login Successfully', 'status' : 200};
-//      req.session.user=user;
-//      res.send(json);
-//     } else {
-//      json.status='0';
-//      json.result={'fail' : 'Invalid Credentials', 'status' : 200};
-//      res.send(json);
-//     }
-// });
