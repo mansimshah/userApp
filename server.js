@@ -27,10 +27,10 @@ app.post('/login', user.login);
 
 /*---------------------------Product Routes------------------------------*/
 app.post('/createProduct', common.isUserValid, product.createProduct);
-app.put('/updateProduct/:productId', common.isUserValid, product.updateProduct);
-app.get('/allProducts', common.isUserValid, product.allProducts);
-app.delete('/deleteProduct/:productId', common.isUserValid, product.deleteProduct);
-app.get('/showProduct/:productId', common.isUserValid, product.showProduct);
+app.put('/updateProduct/:productId', product.updateProduct);
+app.get('/getProductsByUser/:user_id', product.getProductsByUser);
+app.delete('/deleteProduct/:productId', product.deleteProduct);
+app.get('/showProduct/:productId', product.showProduct);
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));

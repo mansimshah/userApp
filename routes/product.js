@@ -4,7 +4,7 @@ var mongodb = require('mongodb');
 
 exports.createProduct = _createProduct;
 exports.updateProduct = _updateProduct;
-exports.allProducts = _allProducts;
+exports.getProductsByUser = _getProductsByUser;
 exports.deleteProduct = _deleteProduct;
 exports.showProduct = _showProduct;
 
@@ -39,9 +39,9 @@ function _updateProduct(req, res, next){
     });
 }
 
-function _allProducts(req, res, next){
+function _getProductsByUser(req, res, next){
     var json={};
-    PRODUCT_COLLECTION.find({},{}, function(error, products) {
+    PRODUCT_COLLECTION.find({user_id: req.params.user_id},{}, function(error, products) {
         if(error){
             json.status = '0';
             json.result = {'Error': error};
