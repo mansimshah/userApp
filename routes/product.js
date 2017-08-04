@@ -1,5 +1,6 @@
 var productModel = require('../models/product');
 var PRODUCT_COLLECTION = productModel.products;
+var mongodb = require('mongodb');
 
 exports.createProduct = _createProduct;
 exports.updateProduct = _updateProduct;
@@ -55,15 +56,21 @@ function _allProducts(req, res, next){
 
 function _deleteProduct(req, res, next){
     var json={};
-    PRODUCT_COLLECTION.remove({_id: req.params.productId}, function(error, product) {
+    PRODUCT_COLLECTION.deleteOne({_id: new mongodb.ObjectID(req.params.productId)}, function(error, product) {
         if(error){
             json.status = '0';
             json.result = {'Error': error};
             res.send(json);
         }else{
-            json.status = '1';
-            json.result = {'Message': "Product successfully deleted." };
-            res.send(json);
+            if (JSON.parse(product).n == 0){
+                json.status = '0';
+                json.result = {'Message': "Product not found." };
+                res.send(json);
+            }else{
+                json.status = '1';
+                json.result = {'Message': "Product successfully deleted." };
+                res.send(json);
+            }
         }
     });
 }

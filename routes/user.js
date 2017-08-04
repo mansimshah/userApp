@@ -4,7 +4,7 @@ var bcrypt = require('bcryptjs');
 var common = require('./common');
 
 exports.register	= _register;
-exports.login = _loginUser;
+exports.login = _login;
 
 function _register(req, res, next){
 
@@ -38,7 +38,7 @@ function _register(req, res, next){
 
 }
 
-function _loginUser(req, res, next){
+function _login(req, res, next){
 	var email = req.body.email;
 	var password = req.body.password;
 	var json={};

@@ -17,6 +17,7 @@ var products = new Schema({
   created_at: {
     type: Date,
     default: Date.now
-  }
+  },
+  user_id: String
 });
 exports.products = mongoose.model('products' , products);
