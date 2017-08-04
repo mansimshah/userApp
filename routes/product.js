@@ -62,7 +62,7 @@ function _deleteProduct(req, res, next){
             json.result = {'Error': error};
             res.send(json);
         }else{
-            if (JSON.parse(product).n == 0){
+            if (product.result.n == 0){
                 json.status = '0';
                 json.result = {'Message': "Product not found." };
                 res.send(json);
