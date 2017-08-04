@@ -1,9 +1,11 @@
-var crypto              = require('crypto');
+var crypto  = require('crypto');
 
 exports.generateSalt = _generateSalt;
 exports.saltAndHash  =  _saltAndHash;
 exports.md5 =  _md5;
 exports.validatePassword = _validatePassword;
+exports.generateToken = _generateToken;
+exports.isUserValid = _isUserValid;
 
 function _generateSalt() {
     var set = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
@@ -30,3 +32,30 @@ function _validatePassword(req, res, plainPass, hashedPass, callback) {
     var validHash = salt + exports.md5(plainPass + salt);
     callback(null, hashedPass === validHash);
 };
+
+function _generateToken(email){
+    var token = exports.md5(email + 'product');
+    return token;
+}
+
+function _isUserValid(req, res, callback){
+    var email = req.headers['email'];
+    var token = req.headers['token'];
+    var json = {};
+
+    if ( !email || !token ){
+        // callback("Email and Token are required.", null);
+        json.error = "Email and Token are required";
+        res.send(json);
+    }else{
+        var newToken = exports.generateToken(email);
+        if ( newToken == token ){
+            // callback(null, "Valid User", next);
+            callback();
+        }else{
+            // callback("Invalid Token", null);
+            json.error = "Invalid Token";
+            res.send(json);
+        }
+    }
+}

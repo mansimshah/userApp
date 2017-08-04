@@ -52,9 +52,11 @@ function _loginUser(req, res, next){
 		}else{
 			common.validatePassword(req, res, req.body.password, user.password, function(err, result){
 				console.log("result==="+result);
+				var token = common.generateToken(email);
+				console.log("token===="+token);
 				if (result){
 					json.status = '1';
-					json.result = {'Message': "You are logged in successfully."};
+					json.result = {'Message': "You are logged in successfully.", 'Token': token};
 					res.send(json);
 				}else{
 					json.status = '0';
